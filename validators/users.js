@@ -9,7 +9,37 @@ const validateLogin = checkSchema(
 
 const validateCreateUser = checkSchema(
   {
-    // TODO: implementar validação
+    name: {
+      isString: true,
+      isLength: {
+        options: {
+          max: 200,
+          min: 1,
+        },
+      },
+      optional: false,
+    },
+    email: {
+      isString: true,
+      isEmail: true,
+      isLength: {
+        options: {
+          max: 200,
+          min: 1,
+        },
+      },
+      optional: false,
+    },
+    password: {
+      isString: true,
+      isLength: {
+        options: {
+          max: 20,
+          min: 8,
+        },
+      },
+      optional: false,
+    },
   },
   ['body'],
 );

@@ -3,6 +3,7 @@ const { ValidationError } = require('sequelize');
 
 const { validationResultCheck } = require('../validators');
 const { validateCreateUser, validateLogin } = require('../validators/users');
+const User = require('../models/User');
 
 const router = express.Router();
 
@@ -31,6 +32,7 @@ router.post(
       const { name, email, password } = req.body;
 
       // TODO: implementar aqui
+      res.status(201).send();
     } catch (error) {
       console.warn(error);
       if (isUniqueEmailError(error)) {

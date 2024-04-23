@@ -51,7 +51,11 @@ const Task = sequelize.define(
  * Docs: https://sequelize.org/docs/v6/core-concepts/assocs/
  */
 Task.belongsTo(User, {
-  // TODO: implementar aqui
+  onDelete: 'NO ACTION',
+  onUpdate: 'NO ACTION',
+  foreignKey: {
+    allowNull: false,
+  },
 });
 
 module.exports = Task;

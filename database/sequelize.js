@@ -21,7 +21,7 @@ const sequelize = new Sequelize(
       // com underline entre as palavras (snake_case).
       // Docs: https://sequelize.org/docs/v6/core-concepts/model-basics/#timestamps
       timestamps: true,
-      underscored: true,
+      underscored: true, // snake_case
     },
   },
 );
