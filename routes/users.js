@@ -13,7 +13,7 @@ function isUniqueEmailError(error) {
   }
 
   return error.errors.find((databaseError) => (
-    databaseError.type === 'unique violation' && databaseError.path === 'email'
+    databaseError.type === 'unique violation' && databaseError.path === 'users_email_unique'
   ));
 }
 
@@ -31,12 +31,16 @@ router.post(
     try {
       const { name, email, password } = req.body;
 
-      // TODO: implementar aqui
-      res.status(201).send();
+      let user = await User.create({
+        name, email, password,
+      });
+      user = await User.findByPk(user.id);
+
+      res.status(201).json(user);
     } catch (error) {
       console.warn(error);
       if (isUniqueEmailError(error)) {
-        res.status(402).send('E-mail já cadastrado!');
+        res.status(412).send('E-mail já cadastrado!');
         return;
       }
       res.status(500).send();

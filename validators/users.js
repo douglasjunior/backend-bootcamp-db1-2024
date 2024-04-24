@@ -10,35 +10,49 @@ const validateLogin = checkSchema(
 const validateCreateUser = checkSchema(
   {
     name: {
-      isString: true,
+      isString: {
+        errorMessage: 'O name deve ser uma string.',
+      },
       isLength: {
         options: {
           max: 200,
           min: 1,
         },
+        errorMessage: 'O name deve ter no mínimo 1 e no máximo 200 caracteres.',
       },
-      optional: false,
+      notEmpty: {
+        errorMessage: 'O name é requerido.',
+      },
     },
     email: {
-      isString: true,
-      isEmail: true,
+      isEmail: {
+        errorMessage: 'O email deve ser um endereço de e-mail válido.',
+      },
       isLength: {
         options: {
           max: 200,
           min: 1,
         },
+        errorMessage: 'O email deve ter no mínimo 1 e no máximo 200 caracteres.',
       },
-      optional: false,
+      notEmpty: {
+        errorMessage: 'O email é requerido.',
+      },
     },
     password: {
-      isString: true,
+      isString: {
+        errorMessage: 'O password deve ser uma string.',
+      },
       isLength: {
         options: {
           max: 20,
           min: 8,
         },
+        errorMessage: 'O password deve ter no mínimo 8 e no máximo 20 caracteres.',
       },
-      optional: false,
+      notEmpty: {
+        errorMessage: 'O password é requerido.',
+      },
     },
   },
   ['body'],
