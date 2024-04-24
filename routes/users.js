@@ -4,6 +4,8 @@ const { ValidationError } = require('sequelize');
 const { validationResultCheck } = require('../validators');
 const { validateCreateUser, validateLogin } = require('../validators/users');
 const User = require('../models/User');
+const { comparePassword } = require('../utils/password');
+const { generateUserToken } = require('../utils/token');
 
 const router = express.Router();
 
@@ -62,7 +64,29 @@ router.post(
     try {
       const { email, password } = req.body;
 
-      // TODO: implementar aqui
+      const user = await User.findOne({
+        where: {
+          email,
+        },
+        attributes: {
+          include: ['password'],
+        },
+      });
+
+      if (
+        !user
+        || !comparePassword(password, user.get('password'))
+      ) {
+        res.status(401).send('E-mail ou senha inválidos.');
+        return;
+      }
+
+      const userPayload = user.toJSON();
+      delete userPayload.password;
+
+      const token = generateUserToken(userPayload);
+
+      res.status(200).json({ token });
     } catch (error) {
       console.warn(error);
       res.status(500).send();
