@@ -1,3 +1,4 @@
+const User = require('../models/User');
 const { validateUserToken } = require('../utils/token');
 
 /**
@@ -35,7 +36,9 @@ const middlewareAuthentication = async (request, response, next) => {
   try {
     const payload = validateUserToken(token);
 
-    // TODO: implementar aqui
+    const user = await User.findByPk(payload.id);
+    // Validar a situação do usuário
+    request.loggedUser = user.toJSON();
 
     next();
   } catch (error) {

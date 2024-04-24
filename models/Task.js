@@ -19,10 +19,6 @@ const Task = sequelize.define(
       allowNull: false,
       defaultValue: false,
     },
-    user_id: {
-      type: DataTypes.BIGINT({ unsigned: true }),
-      allowNull: false,
-    },
   },
   {
     // Docs: https://sequelize.org/docs/v6/core-concepts/model-basics

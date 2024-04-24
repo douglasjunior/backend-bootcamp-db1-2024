@@ -26,7 +26,13 @@ router.post(
 
       const { title, concluded } = body;
 
-      // TODO: implementar aqui
+      const task = await Task.create({
+        title,
+        concluded,
+        userId: loggedUser.id,
+      });
+
+      res.status(201).json(task);
     } catch (error) {
       console.warn(error);
       res.status(500).send();
