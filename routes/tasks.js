@@ -1,4 +1,5 @@
 const express = require('express');
+const { Op } = require('sequelize');
 
 const { middlewareAuthentication } = require('../middlewares/authentication');
 const { validationResultCheck } = require('../validators');
@@ -48,9 +49,24 @@ router.get(
   middlewareAuthentication,
   async (req, res) => {
     try {
-      const { loggedUser } = req;
+      const { loggedUser, query } = req;
 
-      // TODO: implementar aqui
+      const { title } = query;
+
+      const where = {
+        userId: loggedUser.id,
+      };
+      if (title) {
+        where.title = {
+          [Op.like]: `%${title}%`,
+        };
+      }
+
+      const tasks = await Task.findAll({
+        where,
+      });
+
+      res.status(200).json(tasks);
     } catch (error) {
       console.warn(error);
       res.status(500).send();
