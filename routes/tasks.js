@@ -107,7 +107,7 @@ router.get(
 );
 
 /**
- * Atualiza a tarefa alterando o valor da coluna "concluida" para true ou false.
+ * Atualiza a tarefa alterando o valor da coluna "concluded" para true ou false.
  *
  * Em caso de sucesso retorna o objeto da tarefa atualizada.
  *
@@ -122,7 +122,7 @@ const updateTaskConcluded = async (userId, taskId, concluded) => {
   const result = await Task.findOne({
     where: {
       id: taskId,
-      user_id: userId,
+      userId,
     },
   });
 
@@ -131,7 +131,7 @@ const updateTaskConcluded = async (userId, taskId, concluded) => {
   }
 
   /**
-   * Atualiza o valor da coluna "concluida"
+   * Atualiza o valor da coluna "concluded"
    * Docs: https://sequelize.org/docs/v6/core-concepts/model-instances/#updating-an-instance
    */
   result.concluded = concluded;
@@ -152,7 +152,14 @@ router.put(
 
       const { taskId } = params;
 
-      // TODO: implementar aqui
+      const task = await updateTaskConcluded(loggedUser.id, taskId, true);
+
+      if (!task) {
+        res.status(404).send('Tarefa não encontrada.');
+        return;
+      }
+
+      res.status(200).json(task);
     } catch (error) {
       console.warn(error);
       res.status(500).send();
@@ -172,7 +179,14 @@ router.put(
 
       const { taskId } = params;
 
-      // TODO: implementar aqui
+      const task = await updateTaskConcluded(loggedUser.id, taskId, false);
+
+      if (!task) {
+        res.status(404).send('Tarefa não encontrada.');
+        return;
+      }
+
+      res.status(200).json(task);
     } catch (error) {
       console.warn(error);
       res.status(500).send();
@@ -198,7 +212,23 @@ router.patch(
       const { taskId } = params;
       const { title, concluded } = body;
 
-      // TODO: implementar aqui
+      const task = await Task.findOne({
+        where: {
+          id: taskId,
+          userId: loggedUser.id,
+        },
+      });
+      if (!task) {
+        res.status(404).send('Tarefa não encontrada.');
+        return;
+      }
+
+      await task.update({
+        title,
+        concluded,
+      });
+
+      res.status(200).json(task);
     } catch (error) {
       console.warn(error);
       res.status(500).send();
