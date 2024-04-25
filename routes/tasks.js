@@ -86,7 +86,19 @@ router.get(
 
       const { taskId } = params;
 
-      // TODO: implementar aqui
+      const task = await Task.findOne({
+        where: {
+          id: taskId,
+          userId: loggedUser.id,
+        },
+      });
+
+      if (!task) {
+        res.status(404).send('Tarefa não encontrada.');
+        return;
+      }
+
+      res.status(200).json(task);
     } catch (error) {
       console.warn(error);
       res.status(500).send();
