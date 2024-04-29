@@ -14,4 +14,6 @@ RUN npm install \
 
 COPY . .
 
+RUN npm test -- --ci
+
 CMD [ "npm", "run", "start" ]
