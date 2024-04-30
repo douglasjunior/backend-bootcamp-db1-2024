@@ -15,7 +15,7 @@ function isUniqueEmailError(error) {
   }
 
   return error.errors.find((databaseError) => (
-    databaseError.type === 'unique violation' && databaseError.path === 'users_email_unique'
+    databaseError.type === 'unique violation' && databaseError.path.includes('email')
   ));
 }
 
