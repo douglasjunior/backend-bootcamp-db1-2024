@@ -236,4 +236,36 @@ router.patch(
   },
 );
 
+/**
+ * Remove a tarefa do banco de dados
+ */
+router.delete(
+  '/:taskId',
+  middlewareAuthentication,
+  async (req, res) => {
+    try {
+      const { loggedUser, params } = req;
+
+      const { taskId } = params;
+
+      const deletedTasks = await Task.destroy({
+        where: {
+          id: taskId,
+          userId: loggedUser.id,
+        },
+      });
+
+      if (!deletedTasks) {
+        res.status(404).send('Tarefa não encontrada.');
+        return;
+      }
+
+      res.status(204).send();
+    } catch (error) {
+      console.warn(error);
+      res.status(500).send();
+    }
+  },
+);
+
 module.exports = router;
