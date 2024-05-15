@@ -17,6 +17,7 @@ app.use(cors({
   origin: [
     // Libera o servidor na núvem
     /.*.douglasjunior.xyz$/,
+    /.*gerenciador-tarefas-douglas.netlify.app$/
     // Libera acesso local
     /http:\/\/(localhost|127.0.0.1)(:\d+){0,1}$/,
   ],
